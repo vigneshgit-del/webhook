@@ -36,3 +36,50 @@ pipeline {
         }
     }
 }
+
+
+
+
+
+#################################################################################
+
+pipeline {
+    agent any
+
+    tools {
+        maven 'MAVEN-HOME'
+    }
+
+    stages {
+        stage('Git Clone') {
+            steps {
+                bat 'if exist simple-java-maven-app rmdir /s /q simple-java-maven-app'
+                bat 'git clone https://github.com/mekalavigneshwar9/simple-java-maven-app.git'
+            }
+        }
+
+        stage('Clean') {
+            steps {
+                bat 'mvn clean -f simple-java-maven-app'
+            }
+        }
+
+        stage('Install') {
+            steps {
+                bat 'mvn install -f simple-java-maven-app'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                bat 'mvn test -f simple-java-maven-app'
+            }
+        }
+
+        stage('Package') {
+            steps {
+                bat 'mvn package -f simple-java-maven-app'
+            }
+        }
+    }
+}
